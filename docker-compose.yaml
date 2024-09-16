@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: postgres
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tenders
+
+      POSTGRES_PASSWORD: Usx6YSbXyJ54FnW7w2pueNfmR
+    networks:
+      - metanet1
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    networks:
+      - metanet1
+
+networks:
+  metanet1:
+    driver: bridge
+
+volumes:
+  db:
